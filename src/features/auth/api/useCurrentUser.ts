@@ -4,9 +4,9 @@ import { apiClient } from "../../../api/client";
 
 export function useCurrentUser() {
   return useQuery({
-    queryKey: ["current-user"],
+    queryKey: ["currentUser"],
     queryFn: async () => {
-      const response = await apiClient.get<UserResponse>("/users/me");
+      const response = await apiClient.get<UserResponse>("/auth/me");
 
       return response.data;
     },
