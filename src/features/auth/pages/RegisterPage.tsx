@@ -17,7 +17,7 @@ export function RegisterPage() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (password !== passwordConfirmation) {

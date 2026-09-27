@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { LogOut, User } from "lucide-react";
+import { LayoutDashboard, LogOut, User } from "lucide-react";
 import type { UserResponse } from "../../features/auth/types";
 
 interface UserMenuProps {
@@ -81,11 +81,20 @@ export function UserMenu({ user, onLogout, isLoggingOut }: UserMenuProps) {
               Meu perfil
             </Link>
 
+            <Link
+              to="/dashboard"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 px-4 py-2.5 text-sm text-muted transition-colors hover:bg-ink hover:text-text"
+            >
+              <LayoutDashboard size={16} strokeWidth={1.5} />
+              Dashboard
+            </Link>
+
             <button
               type="button"
               onClick={onLogout}
               disabled={isLoggingOut}
-              className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-muted transition-colors hover:bg-ink hover:text-danger disabled:opacity-50 cursor-pointer"
+              className="cursor-pointer flex w-full items-center gap-3 px-4 py-2.5 text-sm text-muted transition-colors hover:bg-ink hover:text-danger disabled:opacity-50"
             >
               <LogOut size={16} strokeWidth={1.5} />
               {isLoggingOut ? "Saindo..." : "Sair"}
