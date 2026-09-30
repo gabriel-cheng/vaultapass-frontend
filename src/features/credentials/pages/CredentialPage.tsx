@@ -35,6 +35,8 @@ type EditableField =
   | "description"
   | null;
 
+type CopyableCredentialField = "login" | "email" | "password";
+
 export function CredentialPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -63,14 +65,16 @@ export function CredentialPage() {
   const [platformName, setPlatformName] = useState("");
 
   const [login, setLogin] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState("");
-  const [link, setLink] = useState("");
-  const [description, setDescription] = useState("");
+  const [link, setLink] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [copied, setCopied] = useState(false);
+  const [copiedItem, setCopiedItem] = useState<CopyableCredentialField | null>(
+    null,
+  );
 
   function startEditing(field: EditableField) {
     if (!credential.data) {
@@ -142,17 +146,39 @@ export function CredentialPage() {
     setShowPassword(true);
   }
 
-  async function handleCopyPassword() {
-    if (!credentialPassword.data) {
+  async function handleCopyItem(handle: CopyableCredentialField) {
+    if (handle === "password") {
+      if (!credentialPassword.data) {
+        return;
+      }
+
+      await navigator.clipboard.writeText(credentialPassword.data);
+
+      setCopiedItem("password");
+
+      window.setTimeout(() => {
+        setCopiedItem(null);
+      }, 1500);
+
       return;
     }
 
-    await navigator.clipboard.writeText(credentialPassword.data);
+    if (!credential.data) {
+      return;
+    }
 
-    setCopied(true);
+    const value = credential.data[handle];
+
+    if (typeof value !== "string" || !value) {
+      return;
+    }
+
+    await navigator.clipboard.writeText(value);
+
+    setCopiedItem(handle);
 
     window.setTimeout(() => {
-      setCopied(false);
+      setCopiedItem(null);
     }, 1500);
   }
 
@@ -305,9 +331,28 @@ export function CredentialPage() {
             onEdit={() => startEditing("login")}
             onCancel={cancelEditing}
             value={
-              <span className="font-mono text-sm text-text">
-                {currentCredential.login}
-              </span>
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="font-mono text-xs text-muted">
+                    {currentCredential.login}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleCopyItem("login")}
+                  className="shrink-0 cursor-pointer text-muted transition-colors hover:text-text"
+                  aria-label="Copiar login"
+                >
+                  {copiedItem === "login" ? (
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-signal">
+                      Copiado
+                    </span>
+                  ) : (
+                    <Copy size={15} strokeWidth={1.5} />
+                  )}
+                </button>
+              </div>
             }
           >
             <form
@@ -355,9 +400,30 @@ export function CredentialPage() {
             onEdit={() => startEditing("email")}
             onCancel={cancelEditing}
             value={
-              <span className="font-mono text-sm text-text">
-                {currentCredential.email || "Nenhum e-mail associado"}
-              </span>
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="font-mono text-xs text-muted">
+                    {currentCredential.email ?? "Nenhum e-mail associado"}
+                  </p>
+                </div>
+
+                {currentCredential.email && (
+                  <button
+                    type="button"
+                    onClick={() => handleCopyItem("email")}
+                    className="shrink-0 cursor-pointer text-muted transition-colors hover:text-text"
+                    aria-label="Copiar e-mail"
+                  >
+                    {copiedItem === "email" ? (
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-signal">
+                        Copiado
+                      </span>
+                    ) : (
+                      <Copy size={15} strokeWidth={1.5} />
+                    )}
+                  </button>
+                )}
+              </div>
             }
           >
             <form
@@ -367,7 +433,7 @@ export function CredentialPage() {
                 updateEmail.mutate(
                   {
                     credentialId,
-                    email,
+                    email: email ?? "",
                   },
                   {
                     onSuccess: () => {
@@ -382,7 +448,7 @@ export function CredentialPage() {
                 id="credential-email"
                 label="E-mail"
                 type="email"
-                value={email}
+                value={email ?? ""}
                 onChange={(event) => setEmail(event.target.value)}
                 autoFocus
               />
@@ -429,16 +495,18 @@ export function CredentialPage() {
                 {showPassword && credentialPassword.data && (
                   <button
                     type="button"
-                    onClick={handleCopyPassword}
-                    className="cursor-pointer text-muted transition-colors hover:text-text"
+                    onClick={() => handleCopyItem("password")}
+                    className="shrink-0 cursor-pointer text-muted transition-colors hover:text-text"
                     aria-label="Copiar senha"
                   >
-                    <Copy size={16} strokeWidth={1.5} />
+                    {copiedItem === "password" ? (
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-signal">
+                        Copiado
+                      </span>
+                    ) : (
+                      <Copy size={15} strokeWidth={1.5} />
+                    )}
                   </button>
-                )}
-
-                {copied && (
-                  <span className="font-mono text-xs text-signal">Copiado</span>
                 )}
 
                 {credentialPassword.isError && (
@@ -526,7 +594,7 @@ export function CredentialPage() {
                 updateLink.mutate(
                   {
                     credentialId,
-                    link,
+                    link: link ?? "",
                   },
                   {
                     onSuccess: () => {
@@ -541,7 +609,7 @@ export function CredentialPage() {
                 id="credential-link"
                 label="Link"
                 type="url"
-                value={link}
+                value={link ?? ""}
                 onChange={(event) => setLink(event.target.value)}
                 autoFocus
               />
@@ -577,7 +645,7 @@ export function CredentialPage() {
                 updateDescription.mutate(
                   {
                     credentialId,
-                    description,
+                    description: description ?? "",
                   },
                   {
                     onSuccess: () => {
@@ -598,7 +666,7 @@ export function CredentialPage() {
 
                 <textarea
                   id="credential-description"
-                  value={description}
+                  value={description ?? ""}
                   onChange={(event) => setDescription(event.target.value)}
                   className="mt-1 min-h-24 w-full resize-y bg-transparent text-sm leading-6 text-text outline-none"
                   autoFocus

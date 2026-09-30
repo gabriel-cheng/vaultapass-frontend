@@ -25,7 +25,7 @@ export function PublicHeader() {
     <header className="border-b border-line">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
         <Link to="/" className="font-mono text-sm text-text">
-          vaultapass
+          VAULTAPASS
         </Link>
 
         {isAuthenticated ? (
