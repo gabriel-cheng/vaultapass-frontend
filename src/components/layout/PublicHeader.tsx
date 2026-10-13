@@ -19,7 +19,10 @@ export function PublicHeader() {
   }
 
   const isAuthenticated =
-    currentUser.isSuccess && currentUser.data !== undefined;
+    currentUser.isSuccess &&
+    !currentUser.isFetching &&
+    currentUser.data !== null &&
+    currentUser.data !== undefined;
 
   return (
     <header className="border-b border-line">
@@ -28,7 +31,7 @@ export function PublicHeader() {
           VAULTAPASS
         </Link>
 
-        {isAuthenticated ? (
+        {isAuthenticated && currentUser.data ? (
           <UserMenu
             user={currentUser.data}
             onLogout={handleLogout}
