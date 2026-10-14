@@ -25,10 +25,16 @@ export function PublicHeader() {
     currentUser.data !== undefined;
 
   return (
-    <header className="border-b border-line">
+    <header className="sticky top-0 z-50 border-b border-line bg-surface">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-        <Link to="/" className="font-mono text-sm text-text">
-          VAULTAPASS
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src="/logo/sizes/vaultapass_250x205.png"
+            alt="VaultaPass"
+            className="h-8 w-auto"
+          />
+
+          <span className="font-mono text-sm text-text">VAULTAPASS</span>
         </Link>
 
         {isAuthenticated && currentUser.data ? (

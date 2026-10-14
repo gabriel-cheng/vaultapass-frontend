@@ -46,9 +46,17 @@ export function RegisterPage() {
   return (
     <AuthLayout>
       <div className="mb-10 text-center">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted">
-          vaultapass
-        </p>
+        <div className="flex flex-col items-center gap-2">
+          <img
+            src="/logo/sizes/vaultapass_250x205.png"
+            alt="VaultaPass"
+            className="h-10 w-auto"
+          />
+
+          <p className="font-mono text-xs uppercase tracking-widest text-muted">
+            VaultaPass
+          </p>
+        </div>
 
         <h1 className="mt-2 text-2xl font-medium text-text">Criar sua conta</h1>
       </div>
