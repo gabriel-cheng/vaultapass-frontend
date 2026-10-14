@@ -13,6 +13,13 @@ export function RouteErrorPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-ink px-6">
       <div className="w-full max-w-sm text-center">
+        <div className="flex flex-col items-center gap-2">
+          <img
+            src="/logo/sizes/vaultapass_250x205.png"
+            alt="VaultaPass"
+            className="h-20 w-auto mb-3"
+          />
+        </div>
         <p className="font-mono text-xs text-muted">
           {isNotFound ? "404" : "ERROR"}
         </p>

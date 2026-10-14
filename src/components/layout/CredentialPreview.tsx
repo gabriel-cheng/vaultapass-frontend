@@ -14,9 +14,6 @@ export function CredentialPreview() {
     <div className="min-w-0 border border-line bg-surface">
       <div className="flex items-center justify-between border-b border-line px-5 py-4">
         <div>
-          <p className="font-mono text-xs tracking-wider text-text">
-            VAULTAPASS
-          </p>
           <p className="mt-1 text-xs text-muted">Suas credenciais</p>
         </div>
 

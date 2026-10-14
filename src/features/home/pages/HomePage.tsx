@@ -11,6 +11,7 @@ import { PublicHeader } from "../../../components/layout/PublicHeader";
 import { Button } from "../../../components/ui/Button";
 import { CredentialPreview } from "../../../components/layout/CredentialPreview";
 import { useCurrentUser } from "../../auth/api/useCurrentUser";
+import { Logotype } from "../../../components/layout/Logotype";
 
 export function HomePage() {
   const currentUser = useCurrentUser();
@@ -28,13 +29,8 @@ export function HomePage() {
         <section className="border-b border-line">
           <div className="mx-auto grid max-w-5xl items-center gap-14 px-6 py-20 sm:py-28 lg:grid-cols-[1fr_0.9fr] lg:gap-12">
             <div>
-              <p className="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted">
-                <img
-                  src="/logo/sizes/vaultapass_250x205.png"
-                  alt="VaultaPass"
-                  className="h-8 w-auto object-contain"
-                />
-                <span>Seu cofre digital</span>
+              <p className="mb-6 flex items-center gap-3 font-mono text-xs tracking-widest text-muted">
+                <Logotype type="link" text="seu cofre digital" />
               </p>
 
               <h1 className="max-w-xl text-4xl font-medium leading-tight tracking-tight text-text sm:text-5xl lg:text-6xl">
