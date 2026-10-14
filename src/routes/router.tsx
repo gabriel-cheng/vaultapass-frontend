@@ -10,25 +10,30 @@ import { ProfilePage } from "../features/profile/pages/ProfilePage";
 import { DashboardPage } from "../features/dashboard/pages/DashboardPage";
 import { CredentialPage } from "../features/credentials/pages/CredentialPage";
 import { CreateCredentialPage } from "../features/credentials/pages/CreateCredentialPage";
+import { RootLayout } from "../components/layout/RootLayout";
 
 export const router = createBrowserRouter([
   {
+    element: <RootLayout />,
     errorElement: <RouteErrorPage />,
 
     children: [
       {
         path: "/",
         element: <HomePage />,
+        handle: { title: "Home | VaultaPass" },
       },
 
       {
         path: "/login",
         element: <LoginPage />,
+        handle: { title: "Login | VaultaPass" },
       },
 
       {
         path: "/register",
         element: <RegisterPage />,
+        handle: { title: "Cadastro | VaultaPass" },
       },
 
       {
@@ -37,21 +42,25 @@ export const router = createBrowserRouter([
           {
             path: "/profile",
             element: <ProfilePage />,
+            handle: { title: "Perfil | VaultaPass" },
           },
 
           {
             path: "/dashboard",
             element: <DashboardPage />,
+            handle: { title: "Dashboard | VaultaPass" },
           },
 
           {
             path: "/credentials/:id",
             element: <CredentialPage />,
+            handle: { title: "Credenciais | VaultaPass" },
           },
 
           {
             path: "/credentials/new",
             element: <CreateCredentialPage />,
+            handle: { title: "Criar credencial | VaultaPass" },
           },
         ],
       },
